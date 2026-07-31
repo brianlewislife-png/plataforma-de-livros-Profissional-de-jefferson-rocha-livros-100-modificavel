@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= book.title %> | <%= settings.siteTitle %></title>
+    <meta name="description" content="<%= book.description %>" />
+    <meta name="theme-color" content="#0d0d0f" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <%- include('partials/topbar') %>
+    <%- include('partials/installBanner') %>
+
+    <main class="book-page">
+      <div class="container book-layout">
+        <div class="book-cover">
+          <% if (book.coverUrl) { %>
+            <img src="<%= book.coverUrl %>" alt="Capa de <%= book.title %>" />
+          <% } else { %>
+            <span class="monogram"><%= String(book.title || 'L').charAt(0).toUpperCase() %></span>
+          <% } %>
+        </div>
+        <div class="book-info">
+          <p class="eyebrow"><%= book.category %> · <%= book.language %></p>
+          <h1><%= book.title %></h1>
+          <% if (book.subtitle) { %><h2><%= book.subtitle %></h2><% } %>
+          <p class="book-description"><%= book.description %></p>
+
+          <ul class="details-list">
+            <li><strong>Autor:</strong> <%= book.author %></li>
+            <li><strong>Categoria:</strong> <%= book.category %></li>
+            <li><strong>Editora:</strong> <%= book.publisher %></li>
+            <li><strong>Ano:</strong> <%= book.year %></li>
+            <li><strong>Páginas:</strong> <%= book.pages %></li>
+            <li><strong>Idioma:</strong> <%= book.language %></li>
+            <li><strong>Faixa etária:</strong> <%= book.ageRange %></li>
+            <li><strong>Avaliação:</strong> <span class="rating-gold">★ <%= Number(book.rating || 0).toFixed(1).replace('.', ',') %></span></li>
+          </ul>
+
+          <% if (book.isFree) { %>
+            <div class="action-box">
+              <h3>Este livro é gratuito</h3>
+              <% if (book.downloadLinks.length) { %>
+                <a class="btn btn-success" href="<%= book.downloadLinks[0] %>" target="_blank" rel="noreferrer">Baixar</a>
+              <% } else { %>
+                <p class="hero-text">Entre em contato para receber o download gratuito.</p>
+                <a class="btn btn-success" href="https://wa.me/<%= settings.whatsapp %>?text=Olá! Quero baixar o livro gratuito <%= encodeURIComponent(book.title) %>." target="_blank" rel="noreferrer">Pedir pelo WhatsApp</a>
+              <% } %>
+            </div>
+          <% } else { %>
+            <div class="action-box">
+              <h3>Comprar agora</h3>
+              <% if (book.isPromotion) { %>
+                <p class="old-price">R$ <%= Number(book.price).toFixed(2).replace('.', ',') %></p>
+                <p class="promo-price">R$ <%= Number(book.promoPrice).toFixed(2).replace('.', ',') %></p>
+                <p class="discount"><%= book.discount %>% de desconto</p>
+              <% } else { %>
+                <p class="promo-price">R$ <%= Number(book.price).toFixed(2).replace('.', ',') %></p>
+              <% } %>
+              <a class="btn btn-primary" href="https://wa.me/<%= book.whatsappNumber || settings.whatsapp %>?text=Olá! Quero comprar o livro <%= encodeURIComponent(book.title) %> por R$ <%= (book.isPromotion ? book.promoPrice : book.price).toString().replace('.', ',') %>." target="_blank" rel="noreferrer">Comprar pelo WhatsApp</a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

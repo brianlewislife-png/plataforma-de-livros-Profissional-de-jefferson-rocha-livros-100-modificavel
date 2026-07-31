@@ -1,0 +1,29 @@
+<aside class="admin-sidebar">
+  <a class="brand" href="<%= adminPath %>/dashboard"><%= settings.siteTitle %></a>
+
+  <div class="sidebar-group">
+    <span class="sidebar-label">Principal</span>
+    <nav>
+      <a href="<%= adminPath %>/dashboard" class="<%= active === 'dashboard' ? 'active' : '' %>">Dashboard</a>
+    </nav>
+  </div>
+
+  <div class="sidebar-group">
+    <span class="sidebar-label">Catálogo</span>
+    <nav>
+      <a href="<%= adminPath %>/livros" class="<%= active === 'livros' ? 'active' : '' %>">Todos os livros</a>
+      <a href="<%= adminPath %>/livros/novo" class="<%= active === 'novo' ? 'active' : '' %>">Novo livro</a>
+    </nav>
+  </div>
+
+  <div class="sidebar-group">
+    <span class="sidebar-label">Site</span>
+    <nav>
+      <a href="<%= adminPath %>/configuracoes" class="<%= active === 'configuracoes' ? 'active' : '' %>">Configurações</a>
+    </nav>
+  </div>
+
+  <div class="sidebar-foot">
+    <a href="<%= adminPath %>/logout">Sair da sessão</a>
+  </div>
+</aside>

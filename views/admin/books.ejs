@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Livros | <%= settings.siteTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="admin-shell">
+      <%- include('partials/sidebar') %>
+      <main class="admin-main">
+        <%- include('partials/topbar') %>
+        <h1>Cadastro e gestão de livros</h1>
+        <p class="page-sub">Crie, edite, duplique, publique e exclua títulos.</p>
+        <div class="admin-actions">
+          <a class="btn btn-primary" href="<%= adminPath %>/livros/novo">Novo Livro</a>
+          <a class="btn btn-secondary" href="<%= adminPath %>/dashboard">Voltar ao Dashboard</a>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Livro</th>
+                <th>Categoria</th>
+                <th>Status</th>
+                <th>Preço</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (books.length) { %>
+                <% books.forEach((book) => { %>
+                  <tr>
+                    <td>
+                      <strong><%= book.title %></strong>
+                      <% if (book.featured) { %><span class="badge">Destaque</span><% } %>
+                      <% if (book.isFree) { %><span class="badge free">Grátis</span><% } %>
+                    </td>
+                    <td><%= book.category %></td>
+                    <td><span class="badge status"><%= book.status %></span></td>
+                    <td>
+                      <% if (book.isFree) { %>—<% } else if (book.isPromotion) { %>
+                        <span class="old">R$ <%= Number(book.price).toFixed(2).replace('.', ',') %></span>
+                        R$ <%= Number(book.promoPrice).toFixed(2).replace('.', ',') %>
+                      <% } else { %>
+                        R$ <%= Number(book.price).toFixed(2).replace('.', ',') %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <div class="row-actions">
+                        <a href="<%= adminPath %>/livros/<%= book.id %>/editar">Editar</a>
+                        <form method="post" action="<%= adminPath %>/livros/<%= book.id %>/duplicar" style="display:inline">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                          <button type="submit" class="btn-link" style="background:none;border:none;padding:0;color:var(--gold-2);cursor:pointer;font:inherit;font-weight:600;font-size:.85rem">Duplicar</button>
+                        </form>
+                        <form method="post" action="<%= adminPath %>/livros/<%= book.id %>/excluir" style="display:inline">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                          <button type="submit" class="btn-link link-danger" style="background:none;border:none;padding:0;color:var(--danger);cursor:pointer;font:inherit;font-weight:600;font-size:.85rem">Excluir</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">Nenhum livro cadastrado.</td></tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configurações | <%= settings.siteTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="admin-shell">
+      <%- include('partials/sidebar') %>
+      <main class="admin-main">
+        <%- include('partials/topbar') %>
+        <h1>Configurações do site</h1>
+        <p class="page-sub">Personalize textos, contatos e categorias exibidas no site.</p>
+        <% if (saved) { %><div class="alert alert-success">Configurações salvas com sucesso.</div><% } %>
+        <form method="post" action="<%= adminPath %>/configuracoes">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <div class="form-grid">
+            <div class="form-panel">
+              <h3>Identidade</h3>
+              <p class="panel-sub">Nome e textos principais.</p>
+              <label>Nome do site</label>
+              <input name="siteTitle" value="<%= settings.siteTitle %>" />
+              <label>Tagline (selo acima do título)</label>
+              <input name="tagline" value="<%= settings.tagline %>" />
+              <label>Título do destaque (hero)</label>
+              <input name="heroTitle" value="<%= settings.heroTitle %>" />
+              <label>Texto do destaque (hero)</label>
+              <textarea name="heroText" rows="3"><%= settings.heroText %></textarea>
+            </div>
+
+            <div class="form-panel">
+              <h3>Contato</h3>
+              <p class="panel-sub">Usados nos botões de compra.</p>
+              <label>WhatsApp (somente números, com DDI)</label>
+              <input name="whatsapp" value="<%= settings.whatsapp %>" placeholder="5511999999999" />
+              <label>Instagram (URL)</label>
+              <input name="instagram" value="<%= settings.instagram %>" placeholder="https://instagram.com/..." />
+              <label>Texto do rodapé</label>
+              <input name="footerText" value="<%= settings.footerText %>" />
+            </div>
+
+            <div class="form-panel">
+              <h3>Categorias</h3>
+              <p class="panel-sub">Uma por linha. Usadas no catálogo e nos formulários.</p>
+              <textarea name="categories" rows="8"><%= settings.categories.join('\n') %></textarea>
+            </div>
+          </div>
+
+          <div class="admin-actions">
+            <button class="btn btn-primary" type="submit">Salvar configurações</button>
+            <a class="btn btn-secondary" href="/" target="_blank">Ver site</a>
+          </div>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>

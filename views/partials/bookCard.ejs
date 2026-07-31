@@ -1,0 +1,32 @@
+<article class="book-card">
+  <a class="book-thumb" href="/livro/<%= book.slug %>">
+    <% if (book.coverUrl) { %>
+      <img src="<%= book.coverUrl %>" alt="Capa de <%= book.title %>" />
+    <% } else { %>
+      <span class="monogram"><%= String(book.title || 'L').charAt(0).toUpperCase() %></span>
+    <% } %>
+    <% if (book.isFree) { %>
+      <span class="badge free">Gratuito</span>
+    <% } else if (book.isPromotion) { %>
+      <span class="badge"><%= book.discount %>% OFF</span>
+    <% } %>
+  </a>
+  <div class="book-body">
+    <h3 class="book-title"><a href="/livro/<%= book.slug %>"><%= book.title %></a></h3>
+    <p class="book-author"><%= book.author %></p>
+    <div class="book-meta"><%= book.category %> · <%= book.pages %> páginas</div>
+    <div class="book-footer">
+      <% if (book.isFree) { %>
+        <span class="free-label">Baixar grátis</span>
+      <% } else { %>
+        <div class="book-price">
+          <% if (book.isPromotion) { %>
+            <span class="old">R$ <%= Number(book.price).toFixed(2).replace('.', ',') %></span>
+          <% } %>
+          <strong>R$ <%= Number(book.isPromotion ? book.promoPrice : book.price).toFixed(2).replace('.', ',') %></strong>
+        </div>
+      <% } %>
+      <a class="btn btn-primary small" href="/livro/<%= book.slug %>">Ver</a>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo | <%= settings.siteTitle %></title>
+    <meta name="description" content="Explore o catálogo completo de livros." />
+    <meta name="theme-color" content="#0d0d0f" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <%- include('partials/topbar') %>
+    <%- include('partials/installBanner') %>
+
+    <main class="book-page">
+      <div class="container">
+        <p class="eyebrow">Catálogo</p>
+        <h1>Todos os livros</h1>
+        <p class="hero-text">Encontre pelo nome, autor ou categoria.</p>
+
+        <form class="filter-bar" method="get" action="/livros">
+          <div class="search-form">
+            <input type="text" name="search" placeholder="Buscar por nome, autor ou categoria" value="<%= search %>" />
+            <button class="btn btn-primary" type="submit">Buscar</button>
+          </div>
+          <select name="category" id="categoryFilter">
+            <option value="">Todas as categorias</option>
+            <% categories.forEach((cat) => { %>
+              <option value="<%= cat %>" <%= category === cat ? 'selected' : '' %>><%= cat %></option>
+            <% }) %>
+          </select>
+        </form>
+
+        <% if (books.length) { %>
+          <div class="card-grid">
+            <% books.forEach((book) => { %>
+              <%- include('partials/bookCard', { book }) %>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="empty-state">
+            <h2>Nenhum livro encontrado</h2>
+            <p>Experimente outra busca ou categoria.</p>
+            <a class="btn btn-secondary" href="/livros">Limpar filtros</a>
+          </div>
+        <% } %>
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

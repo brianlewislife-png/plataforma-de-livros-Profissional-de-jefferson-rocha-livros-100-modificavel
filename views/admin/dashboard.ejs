@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | <%= settings.siteTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="admin-shell">
+      <%- include('partials/sidebar') %>
+      <main class="admin-main">
+        <%- include('partials/topbar') %>
+        <h1>Dashboard</h1>
+        <p class="page-sub">Logado como <strong style="color:var(--gold-2)"><%= adminEmail %></strong>. Visão geral da sua plataforma.</p>
+        <div class="admin-actions">
+          <a class="btn btn-primary" href="<%= adminPath %>/livros/novo">Novo livro</a>
+          <a class="btn btn-secondary" href="<%= adminPath %>/livros">Gerenciar livros</a>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><h3>Livros no catálogo</h3><p><%= stats.total %></p></div>
+          <div class="stat-card"><h3>Gratuitos</h3><p><%= stats.free %></p></div>
+          <div class="stat-card"><h3>Pagos</h3><p><%= stats.paid %></p></div>
+          <div class="stat-card"><h3>Em promoção</h3><p><%= stats.promotions %></p></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
