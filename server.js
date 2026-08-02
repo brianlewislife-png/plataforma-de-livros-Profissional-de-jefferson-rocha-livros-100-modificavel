@@ -44,9 +44,14 @@ app.use(
   })
 );
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
+const DEFAULT_SECRET = 'jefferson-rocha-livros-secret';
+const sessionSecret = process.env.SESSION_SECRET || DEFAULT_SECRET;
+if (isProd && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET === DEFAULT_SECRET)) {
+  throw new Error('Defina a variável SESSION_SECRET com um valor forte em produção.');
+}
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'jefferson-rocha-livros-secret',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     rolling: true,
@@ -87,7 +92,7 @@ app.use(mainRoutes);
 app.use(ADMIN_PATH, adminRoutes);
 
 app.use((req, res) => {
-  res.status(404).send('Página não encontrada');
+  res.status(404).render('404');
 });
 
 if (require.main === module) {

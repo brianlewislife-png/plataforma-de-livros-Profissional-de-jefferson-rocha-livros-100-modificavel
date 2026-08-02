@@ -24,6 +24,9 @@
   </div>
 
   <div class="sidebar-foot">
-    <a href="<%= adminPath %>/logout">Sair da sessão</a>
+    <form method="post" action="<%= adminPath %>/logout" class="logout-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <button type="submit" class="logout-btn">Sair da sessão</button>
+    </form>
   </div>
 </aside>

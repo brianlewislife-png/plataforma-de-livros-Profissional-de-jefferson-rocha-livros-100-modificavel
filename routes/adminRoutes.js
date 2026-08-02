@@ -162,7 +162,7 @@ router.post('/login', loginLimiter, (req, res) => {
   return res.status(401).render('admin/login', { error: 'Credenciais inválidas.' });
 });
 
-router.get('/logout', requireAdmin, (req, res) => {
+router.post('/logout', requireAdmin, (req, res) => {
   req.session.destroy(() => res.redirect('/'));
 });
 

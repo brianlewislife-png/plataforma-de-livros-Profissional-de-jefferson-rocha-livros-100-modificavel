@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página não encontrada | <%= settings.siteTitle %></title>
+    <meta name="description" content="O conteúdo procurado não foi encontrado em <%= settings.siteTitle %>." />
+    <meta name="theme-color" content="#0d0d0f" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <%- include('partials/topbar') %>
+
+    <section class="notfound">
+      <div class="container notfound-content">
+        <p class="eyebrow">Erro 404</p>
+        <div class="notfound-code">404</div>
+        <h1>Página não encontrada</h1>
+        <p class="notfound-text">O conteúdo que você procura não existe, foi removido ou o endereço está incorreto.</p>
+        <div class="hero-actions notfound-actions">
+          <a class="btn btn-primary" href="/">Voltar ao início</a>
+          <a class="btn btn-secondary" href="/livros">Ver catálogo</a>
+        </div>
+        <p class="redirect-note">Redirecionando para a página inicial em <span id="countdown">8</span> segundos...</p>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+    <script src="/js/notfound.js"></script>
+  </body>
+</html>

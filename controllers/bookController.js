@@ -30,7 +30,7 @@ function catalog(req, res) {
 function showBook(req, res) {
   const book = getBookBySlug(req.params.slug);
   if (!book) {
-    return res.status(404).send('Página não encontrada');
+    return res.status(404).render('404');
   }
   res.render('book', {
     settings: getSettings(),
