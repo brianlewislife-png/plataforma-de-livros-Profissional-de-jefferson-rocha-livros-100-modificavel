@@ -1,9 +1,10 @@
-const CACHE = 'jr-livros-v2';
+const CACHE = 'jr-livros-v3';
 const STATIC = [
   '/',
   '/css/styles.css',
   '/js/app.js',
   '/manifest.json',
+  '/logo.jpg',
   '/icons/icon-192.png',
   '/icons/icon-512.png'
 ];
