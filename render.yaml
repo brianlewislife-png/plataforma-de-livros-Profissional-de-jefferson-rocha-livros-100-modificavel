@@ -2,15 +2,13 @@ services:
   - type: web
     name: jefferson-rocha-livros
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATA_DIR
-        value: /var/data
       - key: ADMIN_PATH
         value: /gestao-interna
       - key: ADMIN_EMAIL
@@ -18,8 +16,4 @@ services:
       - key: ADMIN_PASSWORD
         sync: false
       - key: SESSION_SECRET
-        generateValue: true
-    disk:
-      name: data
-      mountPath: /var/data
-      sizeGB: 1
+        sync: false
