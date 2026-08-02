@@ -4,6 +4,7 @@ const router = express.Router();
 const { getAllBooks, getBookById, createBook, updateBook, deleteBook, duplicateBook } = require('../models/bookModel');
 const { getSettings, updateSettings } = require('../models/settingsModel');
 const { verifyPassword, getAdmin } = require('../models/adminModel');
+const { notifyNewBook } = require('../services/pushService');
 
 const ADMIN_PATH = process.env.ADMIN_PATH || '/gestao-interna';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@jeffersonrocha.com';
@@ -194,7 +195,8 @@ router.post('/livros', requireAdmin, async (req, res) => {
   if (error) {
     return renderFormWithError(res, bookFromForm(body), 'create', error);
   }
-  await createBook(body);
+  const created = await createBook(body);
+  notifyNewBook(created).catch(() => {});
   res.redirect(`${ADMIN_PATH}/livros`);
 });
 

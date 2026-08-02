@@ -4,3 +4,4 @@ server.err.log
 *.tmp
 .env
 .DS_Store
+data/push_subscriptions.json

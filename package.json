@@ -17,6 +17,7 @@
     "helmet": "^8.1.2",
     "multer": "^2.2.0",
     "pg": "^8.22.0",
-    "sanitize-html": "^2.17.6"
+    "sanitize-html": "^2.17.6",
+    "web-push": "^3.6.7"
   }
 }

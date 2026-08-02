@@ -126,6 +126,14 @@ async function initDb() {
         data JSONB NOT NULL
       )
     `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS push_subscriptions (
+        endpoint TEXT PRIMARY KEY,
+        p256dh TEXT NOT NULL,
+        auth TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT now()
+      )
+    `);
 
     const bookCount = await client.query('SELECT COUNT(*)::int AS total FROM books');
     if (bookCount.rows[0].total === 0) {
