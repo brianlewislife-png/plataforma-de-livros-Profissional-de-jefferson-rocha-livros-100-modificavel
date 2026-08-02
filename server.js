@@ -12,6 +12,7 @@ const { router: adminRoutes, ADMIN_PATH } = require('./routes/adminRoutes');
 const { getSettings } = require('./models/settingsModel');
 const { ensureAdmin } = require('./models/adminModel');
 const { ensureDataDir } = require('./models/dataPaths');
+const { initDb } = require('./models/db');
 
 ensureDataDir();
 ensureAdmin();
@@ -65,11 +66,11 @@ app.use(
 );
 app.use(csrf({ cookie: { httpOnly: true, sameSite: 'lax', secure: isProd } }));
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   res.locals.csrfToken = req.csrfToken ? req.csrfToken() : '';
   res.locals.siteTitle = 'Jefferson Rocha Livros';
   res.locals.adminPath = ADMIN_PATH;
-  res.locals.settings = getSettings();
+  res.locals.settings = await getSettings();
   res.locals.sanitize = (value) => sanitizeHtml(String(value || ''), { allowedTags: [], allowedAttributes: {} });
   next();
 });
@@ -95,10 +96,20 @@ app.use((req, res) => {
   res.status(404).render('404');
 });
 
-if (require.main === module) {
+async function start() {
+  try {
+    await initDb();
+  } catch (err) {
+    console.error('Falha ao conectar ao banco de dados:', err && err.message ? err.message : err);
+    process.exit(1);
+  }
   app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
   });
+}
+
+if (require.main === module) {
+  start();
 }
 
 module.exports = app;

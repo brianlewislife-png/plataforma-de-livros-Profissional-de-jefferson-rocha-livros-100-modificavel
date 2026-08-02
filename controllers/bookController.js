@@ -1,20 +1,26 @@
 const { getFeaturedBooks, getLatestBooks, getPromotions, getBookBySlug, searchBooks } = require('../models/bookModel');
 const { getSettings } = require('../models/settingsModel');
 
-function home(req, res) {
+async function home(req, res) {
+  const [settings, books, latestBooks, promotions] = await Promise.all([
+    getSettings(),
+    getFeaturedBooks(),
+    getLatestBooks(),
+    getPromotions()
+  ]);
   res.render('home', {
-    settings: getSettings(),
-    books: getFeaturedBooks(),
-    latestBooks: getLatestBooks(),
-    promotions: getPromotions()
+    settings,
+    books,
+    latestBooks,
+    promotions
   });
 }
 
-function catalog(req, res) {
-  const settings = getSettings();
+async function catalog(req, res) {
+  const settings = await getSettings();
   const search = String(req.query.search || '').trim();
   const category = String(req.query.category || '').trim();
-  let books = searchBooks(search);
+  let books = await searchBooks(search);
   if (category) {
     books = books.filter((book) => book.category === category);
   }
@@ -27,13 +33,13 @@ function catalog(req, res) {
   });
 }
 
-function showBook(req, res) {
-  const book = getBookBySlug(req.params.slug);
+async function showBook(req, res) {
+  const book = await getBookBySlug(req.params.slug);
   if (!book) {
     return res.status(404).render('404');
   }
   res.render('book', {
-    settings: getSettings(),
+    settings: await getSettings(),
     book
   });
 }

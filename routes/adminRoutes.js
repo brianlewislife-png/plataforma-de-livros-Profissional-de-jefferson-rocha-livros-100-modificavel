@@ -166,8 +166,8 @@ router.post('/logout', requireAdmin, (req, res) => {
   req.session.destroy(() => res.redirect('/'));
 });
 
-router.get('/dashboard', requireAdmin, (req, res) => {
-  const books = getAllBooks();
+router.get('/dashboard', requireAdmin, async (req, res) => {
+  const books = await getAllBooks();
   res.render('admin/dashboard', {
     active: 'dashboard',
     adminEmail: req.session.adminEmail,
@@ -180,62 +180,62 @@ router.get('/dashboard', requireAdmin, (req, res) => {
   });
 });
 
-router.get('/livros', requireAdmin, (req, res) => {
-  res.render('admin/books', { books: getAllBooks(), active: 'livros' });
+router.get('/livros', requireAdmin, async (req, res) => {
+  res.render('admin/books', { books: await getAllBooks(), active: 'livros' });
 });
 
 router.get('/livros/novo', requireAdmin, (req, res) => {
   res.render('admin/form', { book: null, mode: 'create', active: 'novo', error: null });
 });
 
-router.post('/livros', requireAdmin, (req, res) => {
+router.post('/livros', requireAdmin, async (req, res) => {
   const body = { ...req.body, isFree: bookTypeIsFree(req.body), downloadLinks: mergeLinks(req.body) };
   const error = validateBook(body);
   if (error) {
     return renderFormWithError(res, bookFromForm(body), 'create', error);
   }
-  createBook(body);
+  await createBook(body);
   res.redirect(`${ADMIN_PATH}/livros`);
 });
 
-router.get('/livros/:id/editar', requireAdmin, (req, res) => {
-  const book = getBookById(req.params.id);
+router.get('/livros/:id/editar', requireAdmin, async (req, res) => {
+  const book = await getBookById(req.params.id);
   if (!book) {
     return res.status(404).send('Livro não encontrado');
   }
   return res.render('admin/form', { book, mode: 'edit', active: 'livros', error: null });
 });
 
-router.post('/livros/:id/editar', requireAdmin, (req, res) => {
+router.post('/livros/:id/editar', requireAdmin, async (req, res) => {
   const body = { ...req.body, isFree: bookTypeIsFree(req.body), downloadLinks: mergeLinks(req.body) };
   const error = validateBook(body);
   if (error) {
     return renderFormWithError(res, bookFromForm({ ...body, id: req.params.id }), 'edit', error);
   }
-  updateBook(req.params.id, body);
+  await updateBook(req.params.id, body);
   res.redirect(`${ADMIN_PATH}/livros`);
 });
 
-router.post('/livros/:id/excluir', requireAdmin, (req, res) => {
-  deleteBook(req.params.id);
+router.post('/livros/:id/excluir', requireAdmin, async (req, res) => {
+  await deleteBook(req.params.id);
   res.redirect(`${ADMIN_PATH}/livros`);
 });
 
-router.post('/livros/:id/duplicar', requireAdmin, (req, res) => {
-  duplicateBook(req.params.id);
+router.post('/livros/:id/duplicar', requireAdmin, async (req, res) => {
+  await duplicateBook(req.params.id);
   res.redirect(`${ADMIN_PATH}/livros`);
 });
 
-router.get('/configuracoes', requireAdmin, (req, res) => {
+router.get('/configuracoes', requireAdmin, async (req, res) => {
   res.render('admin/settings', {
-    settings: getSettings(),
+    settings: await getSettings(),
     active: 'configuracoes',
     saved: req.query.saved === '1'
   });
 });
 
-router.post('/configuracoes', requireAdmin, (req, res) => {
-  updateSettings(req.body);
+router.post('/configuracoes', requireAdmin, async (req, res) => {
+  await updateSettings(req.body);
   res.redirect(`${ADMIN_PATH}/configuracoes?saved=1`);
 });
 
