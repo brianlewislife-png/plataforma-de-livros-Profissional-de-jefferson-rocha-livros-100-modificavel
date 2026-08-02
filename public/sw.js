@@ -1,4 +1,4 @@
-const CACHE = 'jr-livros-v4';
+const CACHE = 'jr-livros-v5';
 const STATIC = [
   '/',
   '/css/styles.css',
