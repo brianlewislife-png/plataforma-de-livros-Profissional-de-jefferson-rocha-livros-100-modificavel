@@ -131,15 +131,13 @@ async function initDb() {
     if (bookCount.rows[0].total === 0) {
       const seed = readJsonFile(path.join(dataDir, 'books.json'));
       if (Array.isArray(seed)) {
-        const insert = await client.query(
-          `INSERT INTO books (slug, title, subtitle, description, author, category, age_range, language, pages, year,
+        const insertSql = `INSERT INTO books (slug, title, subtitle, description, author, category, age_range, language, pages, year,
             publisher, rating, views, status, is_free, price, promo_price, discount, is_promotion, featured,
             whatsapp_number, cover_url, download_links)
            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)
-           ON CONFLICT (slug) DO NOTHING`
-        );
+           ON CONFLICT (slug) DO NOTHING`;
         for (const book of seed) {
-          await client.query(insert.text, bookToParams(book));
+          await client.query(insertSql, bookToParams(book));
         }
       }
     }
