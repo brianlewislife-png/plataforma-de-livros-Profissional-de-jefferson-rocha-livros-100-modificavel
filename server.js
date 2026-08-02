@@ -76,6 +76,13 @@ app.use(ADMIN_PATH, (req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  if (req.method === 'GET') {
+    res.set('Cache-Control', 'no-cache');
+  }
+  next();
+});
+
 app.use(mainRoutes);
 app.use(ADMIN_PATH, adminRoutes);
 

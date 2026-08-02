@@ -1,4 +1,4 @@
-const CACHE = 'jr-livros-v1';
+const CACHE = 'jr-livros-v2';
 const STATIC = [
   '/',
   '/css/styles.css',
@@ -34,6 +34,20 @@ self.addEventListener('fetch', (event) => {
   if (req.url.includes('/gestao-interna')) {
     return;
   }
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          const copy = res.clone();
+          caches.open(CACHE).then((cache) => cache.put(req, copy));
+          return res;
+        })
+        .catch(() =>
+          caches.match(req).then((cached) => cached || caches.match('/'))
+        )
+    );
+    return;
+  }
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) {
@@ -47,11 +61,7 @@ self.addEventListener('fetch', (event) => {
           }
           return res;
         })
-        .catch(() => {
-          if (req.mode === 'navigate') {
-            return caches.match('/');
-          }
-        });
+        .catch(() => undefined);
     })
   );
 });
