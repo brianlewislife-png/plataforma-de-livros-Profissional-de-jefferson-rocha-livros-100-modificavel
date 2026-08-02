@@ -133,6 +133,13 @@ function recordFailure(ip) {
   loginFailures.set(ip, rec);
 }
 
+router.get('/', (req, res) => {
+  if (req.session && req.session.adminLoggedIn) {
+    return res.redirect(`${ADMIN_PATH}/dashboard`);
+  }
+  return res.redirect(`${ADMIN_PATH}/login`);
+});
+
 router.get('/login', (req, res) => res.render('admin/login', { error: null }));
 router.post('/login', loginLimiter, (req, res) => {
   const ip = req.ip || 'unknown';
