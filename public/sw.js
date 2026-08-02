@@ -1,4 +1,4 @@
-const CACHE = 'jr-livros-v3';
+const CACHE = 'jr-livros-v4';
 const STATIC = [
   '/',
   '/css/styles.css',
@@ -24,7 +24,18 @@ self.addEventListener('activate', (event) => {
       .keys()
       .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
       .then(() => self.clients.claim())
+      .then(() =>
+        self.clients.matchAll({ type: 'window' }).then((clients) => {
+          clients.forEach((client) => client.postMessage({ type: 'NEW_VERSION' }));
+        })
+      )
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', (event) => {

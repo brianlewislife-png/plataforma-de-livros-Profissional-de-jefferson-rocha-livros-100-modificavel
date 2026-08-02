@@ -380,6 +380,29 @@ tbody tr:hover td { background: rgba(255, 255, 255, 0.02); }
   .install-actions { width: 100%; justify-content: flex-end; }
 }
 
+/* ---------- PWA update banner ---------- */
+.update-banner {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translate(-50%, -180%);
+  transition: transform 0.35s ease;
+  z-index: 200;
+  width: min(520px, calc(100% - 2rem));
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.55);
+}
+.update-banner.show { transform: translate(-50%, 0); }
+@media (max-width: 600px) {
+  .update-banner { flex-wrap: wrap; }
+}
+
 /* ---------- Auth ---------- */
 .auth-page { min-height: 100vh; display: grid; place-items: center; padding: 2rem; background: radial-gradient(800px 420px at 50% -10%, rgba(200, 162, 75, 0.1), transparent 60%), var(--bg); }
 .auth-card { width: min(440px, 100%); background: var(--surface-2); border: 1px solid var(--border); border-radius: 18px; padding: 2.4rem; }

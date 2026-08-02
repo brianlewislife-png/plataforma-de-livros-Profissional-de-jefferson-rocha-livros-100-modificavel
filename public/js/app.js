@@ -57,5 +57,21 @@
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(function () {});
+
+    navigator.serviceWorker.addEventListener('message', function (event) {
+      if (event.data && event.data.type === 'NEW_VERSION') {
+        var el = document.getElementById('updateBanner');
+        if (el) {
+          el.classList.add('show');
+        }
+      }
+    });
+  }
+
+  var updateBannerEl = document.getElementById('updateBanner');
+  if (updateBannerEl) {
+    updateBannerEl.addEventListener('click', function () {
+      window.location.reload();
+    });
   }
 })();
