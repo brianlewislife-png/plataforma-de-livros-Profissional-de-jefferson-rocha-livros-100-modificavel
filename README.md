@@ -1,3 +1,9 @@
+<img width="717" height="1600" alt="image" src="https://github.com/user-attachments/assets/9eb2f5ac-e4be-4a9f-89be-35319310a756" />
+
+![Uploading image.png…]()
+
+
+
 # Jefferson Rocha Livros
 
 Plataforma web profissional, moderna e responsiva para catálogo de livros, páginas amigáveis, painel administrativo e fluxo de compra via WhatsApp.
